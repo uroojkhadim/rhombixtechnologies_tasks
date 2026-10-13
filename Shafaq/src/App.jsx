@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { birthdayConfig } from './data/birthdayConfig'
+import { allMedia } from './data/mediaLibrary'
 import './App.css'
 
 const sceneLabels = {
@@ -12,6 +13,12 @@ const sceneLabels = {
   letter: 'Letter',
   final: 'Ending',
 }
+
+const mediaGallery = allMedia.map((src, index) => ({
+  src,
+  alt: `Little memory ${index + 1}`,
+  isVideo: src.toLowerCase().endsWith('.mp4'),
+}))
 
 function App() {
   const [openWorld, setOpenWorld] = useState(false)
@@ -176,8 +183,6 @@ function App() {
                 </div>
                 <div className="floating-flower" aria-hidden="true" />
               </div>
-
-              <MusicPlayer music={birthdayConfig.music} />
             </section>
 
             <section id="memories" className="scene scrapbook-scene">
@@ -196,10 +201,28 @@ function App() {
                     onClick={() => setSelectedMemory(memory)}
                     aria-label={`Open memory ${index + 1}`}
                   >
-                    <img src={memory.src} alt={memory.alt} loading="lazy" onError={(event) => { event.currentTarget.style.display = 'none' }} />
-                    <span className="memory-date">{memory.date}</span>
+                    <img
+                      src={memory.src}
+                      alt={memory.alt}
+                      loading="lazy"
+                      onError={(event) => {
+                        event.currentTarget.style.display = 'none'
+                      }}
+                    />
                     <strong>{memory.caption}</strong>
                   </button>
+                ))}
+              </div>
+
+              <div className="media-gallery" aria-label="Library of all saved moments">
+                {mediaGallery.map((media, index) => (
+                  <div key={`${media.src}-${index}`} className="media-tile">
+                    {media.isVideo ? (
+                      <video src={media.src} autoPlay muted loop playsInline preload="metadata" />
+                    ) : (
+                      <img src={media.src} alt={media.alt} loading="lazy" />
+                    )}
+                  </div>
                 ))}
               </div>
             </section>
@@ -215,11 +238,17 @@ function App() {
                   <article key={`${entry.title}-${index}`} className={index % 2 === 0 ? 'timeline-item' : 'timeline-item reversed'}>
                     <div className="timeline-dot" aria-hidden="true" />
                     <div className="timeline-card">
-                      <span className="timeline-date">{entry.date}</span>
                       <h4>{entry.title}</h4>
                       <p>{entry.description}</p>
                       {entry.image && (
-                        <img src={entry.image} alt={entry.title} loading="lazy" onError={(event) => { event.currentTarget.style.display = 'none' }} />
+                        <img
+                          src={entry.image}
+                          alt={entry.title}
+                          loading="lazy"
+                          onError={(event) => {
+                            event.currentTarget.style.display = 'none'
+                          }}
+                        />
                       )}
                     </div>
                   </article>
@@ -285,7 +314,14 @@ function App() {
 
                 <div className={confettiBurst ? 'confetti-layer visible' : 'confetti-layer'} aria-hidden="true">
                   {Array.from({ length: 24 }).map((_, index) => (
-                    <span key={index} style={{ '--delay': `${index * 0.08}s`, '--x': `${(index % 6) * 30 - 60}px`, '--y': `${Math.floor(index / 6) * 26 - 20}px` }} />
+                    <span
+                      key={index}
+                      style={{
+                        '--delay': `${index * 0.08}s`,
+                        '--x': `${(index % 6) * 30 - 60}px`,
+                        '--y': `${Math.floor(index / 6) * 26 - 20}px`,
+                      }}
+                    />
                   ))}
                 </div>
 
@@ -304,7 +340,10 @@ function App() {
                   <div className="envelope-flap" />
                   <div className="letter-paper">
                     {letterParagraphs.map((paragraph, index) => (
-                      <p key={`${paragraph}-${index}`} className={letterOpen ? 'letter-paragraph visible' : 'letter-paragraph'}>
+                      <p
+                        key={`${paragraph}-${index}`}
+                        className={letterOpen ? 'letter-paragraph visible' : 'letter-paragraph'}
+                      >
                         {paragraph}
                       </p>
                     ))}
@@ -325,7 +364,13 @@ function App() {
               <div className="final-card">
                 <p className="eyebrow">The end, and the beginning</p>
                 <h3>{birthdayConfig.finalTagline}</h3>
-                <img src={birthdayConfig.memories[1].src} alt="A joyful memory together" onError={(event) => { event.currentTarget.style.display = 'none' }} />
+                <img
+                  src={birthdayConfig.memories[1].src}
+                  alt="A joyful memory together"
+                  onError={(event) => {
+                    event.currentTarget.style.display = 'none'
+                  }}
+                />
                 <p className="final-message">{birthdayConfig.finalSurpriseText}</p>
                 <div className="final-actions">
                   <button type="button" className="primary-button" onClick={() => jumpToScene('hero')}>
@@ -345,7 +390,9 @@ function App() {
               </div>
 
               <div className="secret-header">
-                <span>{revealedSecrets.length} / {birthdayConfig.hiddenSecrets.length} little surprises found</span>
+                <span>
+                  {revealedSecrets.length} / {birthdayConfig.hiddenSecrets.length} little surprises found
+                </span>
               </div>
 
               <div className="gift-grid">
@@ -377,10 +424,15 @@ function App() {
               ×
             </button>
             <div className="lightbox-media">
-              <img src={selectedMemory.src} alt={selectedMemory.alt} onError={(event) => { event.currentTarget.style.display = 'none' }} />
+              <img
+                src={selectedMemory.src}
+                alt={selectedMemory.alt}
+                onError={(event) => {
+                  event.currentTarget.style.display = 'none'
+                }}
+              />
             </div>
             <div className="lightbox-copy">
-              <p className="lightbox-date">{selectedMemory.date}</p>
               <h4>{selectedMemory.caption}</h4>
               <div className="lightbox-actions">
                 <button type="button" className="secondary-button" onClick={() => revealNextMemory(-1)}>
@@ -394,69 +446,6 @@ function App() {
           </div>
         </div>
       )}
-    </div>
-  )
-}
-
-function MusicPlayer({ music }) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(music.volume || 0.5)
-  const audioRef = useRef(null)
-
-  const hasMusic = Boolean(music.filePath)
-
-  useEffect(() => {
-    if (!audioRef.current) return
-    audioRef.current.volume = volume
-  }, [volume])
-
-  const togglePlayback = async () => {
-    if (!hasMusic || !audioRef.current) return
-
-    if (audioRef.current.paused) {
-      try {
-        await audioRef.current.play()
-        setIsPlaying(true)
-      } catch {
-        setIsPlaying(false)
-      }
-      return
-    }
-
-    audioRef.current.pause()
-    setIsPlaying(false)
-  }
-
-  return (
-    <div className="music-player">
-      <button type="button" className="music-toggle" onClick={togglePlayback} disabled={!hasMusic}>
-        {isPlaying ? 'Pause music' : 'Play music'}
-      </button>
-
-      <div className="music-meta" aria-live="polite">
-        <span className={isPlaying ? 'equalizer playing' : 'equalizer'} aria-hidden="true">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span>{hasMusic ? (isPlaying ? 'Playing softly' : 'Ready when you are') : 'No music file added yet'}</span>
-      </div>
-
-      {hasMusic ? (
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={(event) => setVolume(Number(event.target.value))}
-          aria-label="Music volume"
-        />
-      ) : (
-        <p className="music-hint">Add a licensed song in the configuration file to enable the soundtrack.</p>
-      )}
-
-      {hasMusic && <audio ref={audioRef} src={music.filePath} loop preload="auto" />}
     </div>
   )
 }

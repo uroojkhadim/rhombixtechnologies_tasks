@@ -1,9 +1,64 @@
+﻿:root {
+  --ivory: #fff9f4;
+  --blush: #f5dce2;
+  --dusty-rose: #d99aa8;
+  --burgundy: #793e52;
+  --gold: #d7b98e;
+  --brown: #5b4548;
+  --warm-brown: #8e6b5a;
+  --muted: #6f5860;
+  --heading-color: #38272d;
+  --text-color: #5b4548;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-color);
+  background: var(--ivory);
+  font-family: var(--sans);
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--ivory);
+  color: var(--text-color);
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+button, input {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, p {
+  margin-top: 0;
+}
+
+button:focus-visible, input:focus-visible {
+  outline: 3px solid rgba(121, 62, 82, 0.45);
+  outline-offset: 2px;
+}
+
 .birthday-app {
   position: relative;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(217, 154, 168, 0.18), transparent 38%),
-    linear-gradient(180deg, #fffaf6 0%, #fff5f0 100%);
+  background: radial-gradient(circle at top, rgba(217, 154, 168, 0.18), transparent 38%), linear-gradient(180deg, #fffaf6 0%, #fff5f0 100%);
   color: var(--text-color);
 }
 
@@ -71,7 +126,6 @@ button {
 
 .primary-button,
 .secondary-button,
-.music-toggle,
 .scene-link,
 .memory-card,
 .note-card,
@@ -80,8 +134,7 @@ button {
 }
 
 .primary-button,
-.secondary-button,
-.music-toggle {
+.secondary-button {
   border: 1px solid rgba(121, 62, 82, 0.18);
   border-radius: 999px;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -94,8 +147,7 @@ button {
   box-shadow: 0 16px 34px rgba(121, 62, 82, 0.15);
 }
 
-.secondary-button,
-.music-toggle {
+.secondary-button {
   background: rgba(255, 255, 255, 0.6);
   color: var(--heading-color);
   padding: 0.9rem 1.3rem;
@@ -103,7 +155,6 @@ button {
 
 .primary-button:hover,
 .secondary-button:hover,
-.music-toggle:hover,
 .scene-link:hover,
 .memory-card:hover,
 .note-card:hover,
@@ -218,8 +269,6 @@ button {
 .timeline-card p,
 .note-content,
 .gift-message,
-.music-hint,
-.lightbox-copy p,
 .cake-message {
   color: var(--muted);
 }
@@ -272,66 +321,6 @@ button {
   box-shadow: 0 0 0 12px rgba(215, 185, 142, 0.08);
 }
 
-.music-player {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding: 1rem 1.2rem;
-  border-radius: 1.2rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(121, 62, 82, 0.08);
-}
-
-.music-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--muted);
-}
-
-.equalizer {
-  display: inline-flex;
-  align-items: end;
-  height: 1.3rem;
-  gap: 0.2rem;
-}
-
-.equalizer i {
-  display: block;
-  width: 0.24rem;
-  height: 0.45rem;
-  border-radius: 999px;
-  background: var(--burgundy);
-  animation: pulse 1s ease-in-out infinite alternate;
-}
-
-.equalizer i:nth-child(2) {
-  animation-delay: 0.2s;
-  height: 0.8rem;
-}
-
-.equalizer i:nth-child(3) {
-  animation-delay: 0.4s;
-  height: 1.05rem;
-}
-
-.equalizer.playing i {
-  animation-duration: 0.75s;
-}
-
-.music-player input[type='range'] {
-  width: min(15rem, 55vw);
-  accent-color: var(--burgundy);
-}
-
-.music-hint {
-  margin: 0;
-  font-size: 0.92rem;
-}
-
 .scrapbook-grid,
 .notes-grid,
 .gift-grid {
@@ -368,18 +357,32 @@ button {
   font-size: 0.95rem;
 }
 
-.memory-date {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08rem;
-  color: var(--muted);
-}
-
 .memory-card.small img { height: 15rem; }
 .memory-card.medium img { height: 20rem; }
 .memory-card.large img { height: 22rem; }
+
+.media-gallery {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.media-tile {
+  overflow: hidden;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(121, 62, 82, 0.12);
+  box-shadow: 0 14px 26px rgba(91, 69, 72, 0.06);
+}
+
+.media-tile img,
+.media-tile video {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  display: block;
+}
 
 .timeline {
   position: relative;
@@ -429,18 +432,6 @@ button {
   border-radius: 1.5rem;
   padding: 1.2rem;
   box-shadow: 0 16px 35px rgba(91, 69, 72, 0.08);
-}
-
-.timeline-item.reversed .timeline-card {
-  grid-column: 1;
-}
-
-.timeline-date {
-  display: inline-block;
-  font-size: 0.72rem;
-  letter-spacing: 0.14rem;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 .timeline-card h4 {
@@ -623,7 +614,7 @@ button {
   top: 55%;
   width: 0.7rem;
   height: 1.2rem;
-  background: var(--dusty-rose, #d99aa8);
+  background: var(--dusty-rose);
   border-radius: 0.2rem;
   transform: translate(-50%, -50%) rotate(45deg);
   animation: burst 0.8s ease-out forwards;
@@ -631,11 +622,11 @@ button {
 }
 
 .confetti-layer span:nth-child(odd) {
-  background: var(--gold, #d7b98e);
+  background: var(--gold);
 }
 
 .confetti-layer span:nth-child(3n) {
-  background: var(--burgundy, #793e52);
+  background: var(--burgundy);
 }
 
 .letter-wrap {
@@ -812,24 +803,11 @@ button {
   padding: 1rem 0.5rem;
 }
 
-.lightbox-date {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.12rem;
-  color: var(--muted);
-  font-size: 0.75rem;
-}
-
 .lightbox-copy h4 {
   margin: 0;
   font-family: var(--serif);
   font-size: clamp(1.6rem, 2vw, 2.5rem);
   color: var(--heading-color);
-}
-
-@keyframes pulse {
-  from { transform: scaleY(0.7); opacity: 0.7; }
-  to { transform: scaleY(1.2); opacity: 1; }
 }
 
 @keyframes flicker {
@@ -854,7 +832,8 @@ button {
   .lightbox-panel,
   .scrapbook-grid,
   .notes-grid,
-  .gift-grid {
+  .gift-grid,
+  .media-gallery {
     grid-template-columns: 1fr;
   }
 
@@ -906,14 +885,12 @@ button {
     padding-top: 2.8rem;
   }
 
-  .music-player {
-    justify-content: center;
-  }
-
   .memory-card img,
   .timeline-card img,
   .photo-frame img,
-  .final-card img {
+  .final-card img,
+  .media-tile img,
+  .media-tile video {
     height: 15rem;
   }
 }
