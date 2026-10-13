@@ -214,17 +214,6 @@ function App() {
                 ))}
               </div>
 
-              <div className="media-gallery" aria-label="Library of all saved moments">
-                {mediaGallery.map((media, index) => (
-                  <div key={`${media.src}-${index}`} className="media-tile">
-                    {media.isVideo ? (
-                      <video src={media.src} autoPlay muted loop playsInline preload="metadata" />
-                    ) : (
-                      <img src={media.src} alt={media.alt} loading="lazy" />
-                    )}
-                  </div>
-                ))}
-              </div>
             </section>
 
             <section id="timeline" className="scene timeline-scene">
