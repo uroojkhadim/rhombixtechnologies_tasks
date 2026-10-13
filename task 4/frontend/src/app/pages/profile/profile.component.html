@@ -1,0 +1,47 @@
+<div class="border-b border-wp-border bg-white py-8 dark:border-slate-700 dark:bg-surface-900">
+  <div class="container-app">
+    <nav class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span>/</span>
+      <span class="text-wp-text dark:text-slate-200">My account</span>
+    </nav>
+    <h1 class="mt-4 font-serif text-3xl font-bold text-wp-text dark:text-white">My account</h1>
+  </div>
+</div>
+
+<div class="container-app py-10">
+  <div class="grid gap-8 lg:grid-cols-3">
+    <div class="wp-widget text-center lg:col-span-1">
+      @if (preview()) {
+        <img [src]="preview()" alt="" class="mx-auto h-28 w-28 rounded-sm object-cover" />
+      } @else {
+        <div class="mx-auto flex h-28 w-28 items-center justify-center rounded-sm bg-brand-100 text-4xl font-bold text-brand-700 dark:bg-brand-900/40">
+          {{ auth.user()?.name?.charAt(0) }}
+        </div>
+      }
+      <label class="btn btn-secondary mt-4 cursor-pointer">
+        Upload photo
+        <input type="file" accept="image/*" (change)="onFile($event)" hidden />
+      </label>
+      <p class="mt-4 font-serif text-lg font-semibold text-wp-text dark:text-white">{{ auth.user()?.name }}</p>
+      <p class="entry-meta">{{ auth.user()?.email }}</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="wp-widget space-y-5 lg:col-span-2">
+      <h2 class="wp-widget-title !mb-0">Profile details</h2>
+      <div>
+        <label class="mb-1 block text-sm font-medium">Display name</label>
+        <input type="text" formControlName="name" class="input-field" />
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-medium">Email</label>
+        <input type="email" [value]="auth.user()?.email" disabled class="input-field opacity-70" />
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-medium">New password</label>
+        <input type="password" formControlName="password" class="input-field" placeholder="Leave blank to keep" />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loading()">Update profile</button>
+    </form>
+  </div>
+</div>

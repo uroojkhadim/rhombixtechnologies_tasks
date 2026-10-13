@@ -1,0 +1,24 @@
+<app-auth-shell quote="Start your reading journey today." subtitle="Create a free InkFlow account.">
+  <h1 class="font-serif text-2xl font-bold text-wp-text dark:text-white">Register</h1>
+  <p class="entry-meta mt-2">Create an account to comment and personalize your experience.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4">
+    <div>
+      <label class="mb-1 block text-sm font-medium">Name</label>
+      <input type="text" formControlName="name" class="input-field" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm font-medium">Email</label>
+      <input type="email" formControlName="email" class="input-field" />
+    </div>
+    <div>
+      <label class="mb-1 block text-sm font-medium">Password</label>
+      <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" class="input-field" />
+    </div>
+    <button type="submit" class="btn btn-primary w-full" [disabled]="loading()">Register</button>
+  </form>
+
+  <p class="mt-6 text-center text-sm text-wp-muted">
+    Already registered? <a routerLink="/login" class="font-medium text-brand-600 hover:underline">Log in</a>
+  </p>
+</app-auth-shell>

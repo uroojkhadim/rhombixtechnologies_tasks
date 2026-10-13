@@ -1,0 +1,81 @@
+<div class="border-b border-wp-border bg-white py-8 dark:border-slate-700 dark:bg-surface-900">
+  <div class="container-app">
+    <nav class="breadcrumb">
+      <a routerLink="/">Home</a>
+      <span>/</span>
+      <span class="text-wp-text dark:text-slate-200">Blog</span>
+    </nav>
+    <h1 class="mt-4 font-serif text-3xl font-bold text-wp-text dark:text-white sm:text-4xl">Blog</h1>
+    <p class="entry-meta mt-2">Showing {{ pagination().total }} articles</p>
+  </div>
+</div>
+
+<div class="sticky top-[73px] z-30 border-b border-wp-border bg-wp-bg/95 backdrop-blur-sm dark:border-slate-700 dark:bg-surface-950/95 lg:top-[88px]">
+  <div class="container-app py-4">
+    <form (ngSubmit)="applyFilters()" class="flex flex-col gap-3 md:flex-row md:items-center">
+      <input type="search" [(ngModel)]="search" name="search" placeholder="Search posts…" class="input-field flex-1" />
+      <select [(ngModel)]="sort" name="sort" (change)="applyFilters()" class="input-field md:w-40">
+        <option value="newest">Newest first</option>
+        <option value="trending">Most popular</option>
+      </select>
+      <div class="flex gap-2">
+        <button type="button" (click)="viewMode = 'grid'" class="btn" [class]="viewMode === 'grid' ? 'btn-primary' : 'btn-secondary'">Grid</button>
+        <button type="button" (click)="viewMode = 'list'" class="btn" [class]="viewMode === 'list' ? 'btn-primary' : 'btn-secondary'">List</button>
+      </div>
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+  </div>
+</div>
+
+<div class="container-app py-10 lg:py-12">
+  <div class="flex flex-col gap-10 lg:flex-row">
+    <div class="min-w-0 flex-1">
+      @if (selectedCategory || selectedTag || search) {
+        <div class="mb-6 flex flex-wrap items-center gap-2">
+          <span class="text-sm text-wp-muted">Active filters:</span>
+          <button type="button" (click)="clearFilters()" class="text-sm font-medium text-brand-600 hover:underline">Clear all</button>
+        </div>
+      }
+
+      @if (loading()) {
+        <app-skeleton [count]="6" [columns]="viewMode === 'grid' ? 2 : 1" />
+      } @else if (blogs().length) {
+        @if (viewMode === 'grid') {
+          <div class="grid gap-6 sm:grid-cols-2">
+            @for (blog of blogs(); track blog._id) {
+              <app-blog-card [blog]="blog" />
+            }
+          </div>
+        } @else {
+          <div>
+            @for (blog of blogs(); track blog._id) {
+              <app-blog-card [blog]="blog" variant="list" />
+            }
+          </div>
+        }
+        <app-pagination [page]="pagination().page" [pages]="pagination().pages" (pageChange)="onPageChange($event)" />
+      } @else {
+        <app-empty-state icon="📄" title="No posts found" message="Try a different search or category.">
+          <button type="button" (click)="clearFilters()" class="btn btn-primary">View all posts</button>
+        </app-empty-state>
+      }
+    </div>
+
+    <div class="w-full shrink-0 lg:w-[280px]">
+      <app-blog-sidebar [selectedCategory]="selectedCategory" [showSearch]="false" />
+      <div class="wp-widget mt-6">
+        <h3 class="wp-widget-title">Filter by tag</h3>
+        <div class="flex flex-wrap gap-2">
+          @for (tag of tags(); track tag._id) {
+            <button
+              type="button"
+              (click)="filterTag(tag._id)"
+              class="rounded-sm border px-2.5 py-1 text-xs transition"
+              [class]="selectedTag === tag._id ? 'border-brand-600 bg-brand-600 text-white' : 'border-wp-border text-wp-muted hover:border-brand-600 hover:text-brand-600 dark:border-slate-600'"
+            >{{ tag.name }}</button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

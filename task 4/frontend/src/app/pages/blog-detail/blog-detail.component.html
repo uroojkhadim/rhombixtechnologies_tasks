@@ -1,0 +1,143 @@
+<app-reading-progress />
+
+@if (loading()) {
+  <div class="container-app py-16"><app-skeleton [count]="1" [columns]="1" /></div>
+} @else if (blog(); as b) {
+  <article class="bg-white dark:bg-surface-900">
+    <!-- Featured image - WordPress style -->
+    <div class="border-b border-wp-border bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+      <div class="container-app py-0">
+        <img [src]="cover(b.featuredImage)" [alt]="b.title" class="mx-auto max-h-[520px] w-full object-cover" />
+      </div>
+    </div>
+
+    <header class="border-b border-wp-border bg-white py-10 dark:border-slate-700 dark:bg-surface-900">
+      <div class="container-narrow">
+        <nav class="breadcrumb mb-4">
+          <a routerLink="/">Home</a>
+          <span>/</span>
+          <a routerLink="/blogs">Blog</a>
+          @if (categoryName(b)) {
+            <span>/</span>
+            <span>{{ categoryName(b) }}</span>
+          }
+        </nav>
+        @if (categoryName(b)) {
+          <span class="badge badge-brand uppercase tracking-wide">{{ categoryName(b) }}</span>
+        }
+        <h1 class="mt-3 font-serif text-3xl font-bold leading-tight text-wp-text sm:text-4xl lg:text-[2.75rem] dark:text-white">{{ b.title }}</h1>
+        <p class="entry-meta mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>Posted on <time class="text-wp-text dark:text-slate-200">{{ b.createdAt | date: 'MMMM d, yyyy' }}</time></span>
+          <span>·</span>
+          <span>by <strong class="font-medium text-wp-text dark:text-slate-200">{{ authorName(b) }}</strong></span>
+          <span>·</span>
+          <span>{{ b.readingTime }} min read</span>
+          <span>·</span>
+          <span>{{ b.views }} views</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container-app py-10 lg:py-12">
+      <div class="flex flex-col gap-10 lg:flex-row">
+        <div class="min-w-0 flex-1 lg:max-w-[calc(100%-320px)]">
+          <div class="card p-6 sm:p-10 lg:p-12">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-wp-border pb-6 dark:border-slate-700">
+              <button type="button" (click)="toggleLike()" class="btn btn-secondary text-sm">
+                {{ b.isLiked ? '♥ Liked' : '♡ Like' }} ({{ b.likeCount || 0 }})
+              </button>
+              <div class="flex items-center gap-2 text-sm text-wp-muted">
+                Share:
+                @for (p of ['twitter', 'linkedin', 'facebook']; track p) {
+                  <button type="button" (click)="share(p)" class="btn btn-ghost !px-2 !py-1 text-xs capitalize">{{ p }}</button>
+                }
+              </div>
+            </div>
+
+            <div class="prose-blog mt-8" [innerHTML]="safeContent()"></div>
+
+            <footer class="mt-10 border-t border-wp-border pt-6 dark:border-slate-700">
+              <p class="text-sm text-wp-muted">
+                Tagged under <strong class="text-wp-text dark:text-slate-200">{{ categoryName(b) }}</strong>
+              </p>
+            </footer>
+          </div>
+
+          <!-- Comments -->
+          <section id="comments" class="mt-10">
+            <h2 class="section-title">
+              {{ b.comments?.length || 0 }} Comments
+            </h2>
+
+            @if (auth.isLoggedIn()) {
+              <form (ngSubmit)="submitComment()" class="wp-widget mt-6">
+                <label class="mb-2 block text-sm font-medium text-wp-text dark:text-slate-200">Leave a reply</label>
+                <textarea
+                  [(ngModel)]="commentText"
+                  name="comment"
+                  rows="5"
+                  class="input-field resize-y"
+                  placeholder="Join the discussion…"
+                  required
+                ></textarea>
+                <button type="submit" class="btn btn-primary mt-4" [disabled]="submitting">Post comment</button>
+              </form>
+            } @else {
+              <p class="wp-widget mt-6 text-sm text-wp-muted">
+                <a routerLink="/login" class="font-semibold text-brand-600 hover:underline">Log in</a> to post a comment.
+              </p>
+            }
+
+            <ol class="mt-8 space-y-6">
+              @for (c of b.comments; track c._id) {
+                <li class="wp-widget">
+                  <div class="flex gap-3">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-brand-100 font-semibold text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
+                      {{ commentAuthor(c).charAt(0) }}
+                    </div>
+                    <div>
+                      <p class="font-semibold text-wp-text dark:text-white">{{ commentAuthor(c) }}</p>
+                      <p class="entry-meta">{{ c.createdAt | date: 'MMMM d, yyyy \'at\' h:mm a' }}</p>
+                      <p class="mt-2 text-[15px] leading-relaxed text-wp-muted dark:text-slate-300">{{ c.content }}</p>
+                    </div>
+                  </div>
+                </li>
+              } @empty {
+                <li class="text-center text-sm text-wp-muted py-6">No comments yet.</li>
+              }
+            </ol>
+          </section>
+        </div>
+
+        <aside class="w-full shrink-0 lg:w-[280px]">
+          @if (toc().length) {
+            <div class="wp-widget mb-6">
+              <h3 class="wp-widget-title">Table of contents</h3>
+              <ul class="space-y-2 text-sm">
+                @for (item of toc(); track item.id) {
+                  <li>
+                    <button type="button" (click)="scrollTo(item.id)" class="text-left text-brand-600 hover:underline dark:text-brand-400" [class.pl-3]="item.level === 3">
+                      {{ item.text }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+          <app-blog-sidebar [showSearch]="false" />
+        </aside>
+      </div>
+
+      @if (b.related?.length) {
+        <section class="mt-14 border-t border-wp-border pt-12 dark:border-slate-700">
+          <h2 class="section-title">Related posts</h2>
+          <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @for (rel of b.related; track rel._id) {
+              <app-blog-card [blog]="rel" />
+            }
+          </div>
+        </section>
+      }
+    </div>
+  </article>
+}

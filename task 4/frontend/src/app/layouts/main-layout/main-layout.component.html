@@ -1,0 +1,92 @@
+<!-- WordPress-style top bar -->
+<div class="hidden border-b border-brand-700 bg-brand-600 text-white sm:block">
+  <div class="container-app flex h-9 items-center justify-between text-xs">
+    <p class="opacity-90">Publishing thoughtful stories since 2024</p>
+    <div class="flex items-center gap-4">
+      @if (auth.isLoggedIn()) {
+        <a routerLink="/profile" class="hover:underline">My account</a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="font-semibold hover:underline">Dashboard</a>
+        }
+      } @else {
+        <a routerLink="/login" class="hover:underline">Log in</a>
+        <a routerLink="/register" class="hover:underline">Register</a>
+      }
+    </div>
+  </div>
+</div>
+
+<header class="site-header sticky top-0 z-50 shadow-sm">
+  <div class="container-app py-5 lg:py-6">
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+      <a routerLink="/" class="group block text-center lg:text-left">
+        <h1 class="font-serif text-3xl font-bold tracking-tight text-wp-text transition group-hover:text-brand-600 dark:text-white sm:text-4xl">
+          InkFlow
+        </h1>
+        <p class="mt-1 text-sm text-wp-muted dark:text-slate-400">Ideas worth reading</p>
+      </a>
+
+      <div class="flex items-center justify-center gap-3 lg:justify-end">
+        <nav class="hidden items-center gap-1 border border-wp-border bg-wp-bg p-1 md:flex dark:border-slate-700 dark:bg-surface-950">
+          <a routerLink="/" routerLinkActive="bg-white text-brand-600 shadow-sm dark:bg-slate-800 dark:text-brand-400" [routerLinkActiveOptions]="{ exact: true }" class="px-4 py-2 text-sm font-medium text-wp-muted transition hover:text-wp-text dark:text-slate-400">Home</a>
+          <a routerLink="/blogs" routerLinkActive="bg-white text-brand-600 shadow-sm dark:bg-slate-800 dark:text-brand-400" class="px-4 py-2 text-sm font-medium text-wp-muted transition hover:text-wp-text dark:text-slate-400">Blog</a>
+          <a routerLink="/search" routerLinkActive="bg-white text-brand-600 shadow-sm dark:bg-slate-800 dark:text-brand-400" class="px-4 py-2 text-sm font-medium text-wp-muted transition hover:text-wp-text dark:text-slate-400">Search</a>
+        </nav>
+
+        <button type="button" (click)="theme.toggle()" class="btn btn-ghost !p-2" aria-label="Theme">
+          @if (theme.darkMode()) { ☀️ } @else { 🌙 }
+        </button>
+
+        @if (!auth.isLoggedIn()) {
+          <a routerLink="/register" class="btn btn-primary hidden sm:inline-flex">Subscribe</a>
+        }
+
+        <button type="button" class="btn btn-secondary !p-2 md:hidden" (click)="toggleMenu()" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </div>
+
+  @if (menuOpen()) {
+    <nav class="border-t border-wp-border px-4 py-3 md:hidden dark:border-slate-700">
+      <a routerLink="/" (click)="toggleMenu()" class="block py-2 text-sm font-medium">Home</a>
+      <a routerLink="/blogs" (click)="toggleMenu()" class="block py-2 text-sm font-medium">Blog</a>
+      <a routerLink="/search" (click)="toggleMenu()" class="block py-2 text-sm font-medium">Search</a>
+    </nav>
+  }
+</header>
+
+<main class="min-h-[60vh]">
+  <router-outlet />
+</main>
+
+<footer class="site-footer mt-16">
+  <div class="container-app py-12 lg:py-14">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="lg:col-span-2">
+        <h2 class="font-serif text-2xl font-bold text-white">InkFlow</h2>
+        <p class="mt-3 max-w-md text-sm leading-relaxed text-slate-400">
+          A professional publishing platform for readers and writers. Quality journalism, tutorials, and insights — every day.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-widest text-slate-500">Quick links</h4>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><a routerLink="/blogs" class="text-slate-300 hover:text-white">Blog</a></li>
+          <li><a routerLink="/search" class="text-slate-300 hover:text-white">Search</a></li>
+          <li><a routerLink="/blogs" [queryParams]="{ featured: true }" class="text-slate-300 hover:text-white">Featured</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-widest text-slate-500">Contact</h4>
+        <ul class="mt-4 space-y-2 text-sm text-slate-400">
+          <li>hello@inkflow.blog</li>
+          <li><a href="mailto:support@inkflow.blog" class="hover:text-white">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-slate-700 pt-8 text-xs text-slate-500 sm:flex-row">
+      <p>&copy; {{ year }} InkFlow. Proudly published.</p>
+      <p>Powered by Angular &amp; Node.js</p>
+    </div>
+  </div>
+</footer>

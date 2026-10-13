@@ -1,0 +1,42 @@
+<div class="space-y-6">
+  <div>
+    <h2 class="font-display text-xl font-bold text-slate-900 dark:text-white">Comment moderation</h2>
+    <p class="text-sm text-slate-500">Approve or remove community discussions</p>
+  </div>
+
+  <div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-slate-200 bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/50">
+          <tr>
+            <th class="px-5 py-3">User</th>
+            <th class="px-5 py-3">Article</th>
+            <th class="px-5 py-3">Comment</th>
+            <th class="px-5 py-3">Status</th>
+            <th class="px-5 py-3">Date</th>
+            <th class="px-5 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+          @for (c of comments(); track c._id) {
+            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/30">
+              <td class="px-5 py-4 font-medium">{{ userName(c) }}</td>
+              <td class="max-w-[140px] truncate px-5 py-4 text-slate-500">{{ blogTitle(c) }}</td>
+              <td class="max-w-[200px] truncate px-5 py-4 text-slate-600 dark:text-slate-400">{{ c.content }}</td>
+              <td class="px-5 py-4">
+                <span class="badge" [class]="c.status === 'approved' ? 'badge-brand' : 'bg-amber-50 text-amber-700'">{{ c.status }}</span>
+              </td>
+              <td class="px-5 py-4 text-slate-500">{{ c.createdAt | date: 'short' }}</td>
+              <td class="px-5 py-4 text-right whitespace-nowrap">
+                @if (c.status === 'pending') {
+                  <button type="button" (click)="approve(c._id)" class="mr-2 text-sm font-medium text-emerald-600">Approve</button>
+                }
+                <button type="button" (click)="remove(c._id)" class="text-sm font-medium text-red-600">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

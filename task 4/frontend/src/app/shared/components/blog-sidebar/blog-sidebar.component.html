@@ -1,0 +1,58 @@
+<aside class="space-y-6 lg:sticky lg:top-24 lg:self-start">
+  @if (showSearch) {
+    <div class="wp-widget">
+      <h3 class="wp-widget-title">Search</h3>
+      <form (ngSubmit)="onSearch()" class="flex gap-0">
+        <input type="search" [(ngModel)]="searchQuery" name="q" placeholder="Search…" class="input-field !rounded-r-none !border-r-0" />
+        <button type="submit" class="btn btn-primary !rounded-l-none shrink-0 px-4">Go</button>
+      </form>
+    </div>
+  }
+
+  @if (showCategories && categories().length) {
+    <div class="wp-widget">
+      <h3 class="wp-widget-title">Categories</h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            routerLink="/blogs"
+            class="flex items-center justify-between py-1.5 text-sm transition"
+            [class]="!selectedCategory ? 'font-semibold text-brand-600' : 'text-wp-text hover:text-brand-600 dark:text-slate-300'"
+          >All posts</a>
+        </li>
+        @for (cat of categories(); track cat._id) {
+          <li>
+            <a
+              [routerLink]="['/blogs']"
+              [queryParams]="{ category: cat._id }"
+              class="flex items-center justify-between border-t border-wp-border py-2 text-sm transition dark:border-slate-700"
+              [class]="selectedCategory === cat._id ? 'font-semibold text-brand-600' : 'text-wp-text hover:text-brand-600 dark:text-slate-300'"
+            >{{ cat.name }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (showRecent && recentPosts().length) {
+    <div class="wp-widget">
+      <h3 class="wp-widget-title">Recent posts</h3>
+      <ul class="space-y-4">
+        @for (post of recentPosts(); track post._id) {
+          <li class="border-b border-wp-border pb-4 last:border-0 last:pb-0 dark:border-slate-700">
+            <a [routerLink]="['/blog', post.slug]" class="entry-title !text-base !leading-snug line-clamp-2">
+              {{ post.title }}
+            </a>
+            <p class="entry-meta mt-1">{{ post.createdAt | date: 'MMMM d, yyyy' }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  <div class="wp-widget border-brand-200 bg-brand-50/40 dark:border-brand-800 dark:bg-brand-950/20">
+    <h3 class="wp-widget-title !border-brand-200 dark:!border-brand-800">Stay updated</h3>
+    <p class="text-sm text-wp-muted dark:text-slate-400">Get new articles delivered to your inbox.</p>
+    <a routerLink="/register" class="btn btn-primary mt-4 w-full">Subscribe</a>
+  </div>
+</aside>

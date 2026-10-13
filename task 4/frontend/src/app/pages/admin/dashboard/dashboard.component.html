@@ -1,0 +1,64 @@
+<div class="space-y-8">
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    @for (card of cards; track card.key) {
+      <a [routerLink]="card.link" class="group card p-6 transition hover:-translate-y-0.5 hover:shadow-card-hover">
+        <div class="flex items-start justify-between">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl text-xl" [class]="card.bg">{{ card.icon }}</div>
+          <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400">+12%</span>
+        </div>
+        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">{{ card.label }}</p>
+        <p class="mt-1 font-display text-3xl font-bold text-slate-900 dark:text-white">{{ value(card.key) }}</p>
+      </a>
+    }
+  </div>
+
+  <!-- Charts -->
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div class="card p-6">
+      <h3 class="font-display font-semibold text-slate-900 dark:text-white">Content growth</h3>
+      <p class="text-xs text-slate-500">Articles published over time</p>
+      <div class="mt-6 flex h-48 items-end justify-between gap-2">
+        @for (bar of chartBars; track bar.label) {
+          <div class="flex flex-1 flex-col items-center gap-2">
+            <div
+              class="w-full max-w-[40px] rounded-t-lg bg-gradient-to-t from-brand-600 to-brand-400 transition-all group-hover:from-brand-500"
+              [style.height.%]="bar.height"
+            ></div>
+            <span class="text-[10px] text-slate-400">{{ bar.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="card p-6">
+      <h3 class="font-display font-semibold text-slate-900 dark:text-white">Engagement</h3>
+      <p class="text-xs text-slate-500">Comments vs pending moderation</p>
+      <div class="mt-8 flex items-center justify-center gap-8">
+        <div class="relative h-36 w-36">
+          <svg viewBox="0 0 36 36" class="h-full w-full -rotate-90">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="currentColor" class="text-slate-100 dark:text-slate-800" stroke-width="3"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="currentColor" class="text-brand-600" stroke-width="3" [attr.stroke-dasharray]="approvedPercent() + ', 100'" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-2xl font-bold text-slate-900 dark:text-white">{{ approvedPercent() }}%</span>
+            <span class="text-[10px] text-slate-400">Approved</span>
+          </div>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-brand-600"></span> Approved</div>
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span> Pending ({{ value('pendingComments') }})</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <h3 class="font-display font-semibold text-slate-900 dark:text-white">Quick actions</h3>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3">
+      <a routerLink="/admin/blogs/new" class="btn btn-primary">+ Create blog</a>
+      <a routerLink="/admin/comments" class="btn btn-secondary">Moderate comments</a>
+      <a routerLink="/admin/users" class="btn btn-secondary">Manage users</a>
+    </div>
+  </div>
+</div>

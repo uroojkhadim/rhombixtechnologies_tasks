@@ -1,0 +1,28 @@
+<div class="flex min-h-screen">
+  <div class="hidden w-1/2 bg-gradient-to-br from-brand-700 via-brand-800 to-violet-900 lg:flex lg:flex-col lg:justify-between p-12">
+    <a routerLink="/" class="font-display text-2xl font-bold text-white">Ink<span class="text-brand-200">Flow</span></a>
+    <div>
+      <h2 class="font-display text-3xl font-bold text-white">Admin workspace</h2>
+      <p class="mt-4 max-w-md text-brand-200">Manage content, moderate discussions, and grow your audience from one beautiful dashboard.</p>
+    </div>
+    <p class="text-sm text-brand-300">Secure · Role-based access</p>
+  </div>
+  <div class="flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-16">
+    <div class="mx-auto w-full max-w-md">
+      <h1 class="font-display text-2xl font-bold text-slate-900 dark:text-white">Sign in</h1>
+      <p class="mt-2 text-sm text-slate-500">Administrator access only</p>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4">
+        <div>
+          <label class="mb-1.5 block text-sm font-medium">Email</label>
+          <input type="email" formControlName="email" class="input-field" />
+        </div>
+        <div>
+          <label class="mb-1.5 block text-sm font-medium">Password</label>
+          <input type="password" formControlName="password" class="input-field" />
+        </div>
+        <button type="submit" class="btn btn-primary w-full" [disabled]="loading()">Access dashboard</button>
+      </form>
+      <p class="mt-6 text-center text-xs text-slate-400">Demo: admin@blog.com / admin123</p>
+    </div>
+  </div>
+</div>

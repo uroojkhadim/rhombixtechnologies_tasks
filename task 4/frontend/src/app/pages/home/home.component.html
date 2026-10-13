@@ -1,0 +1,64 @@
+<!-- WordPress-style blog home -->
+<section class="border-b border-wp-border bg-white py-10 dark:border-slate-700 dark:bg-surface-900 sm:py-12" @fadeIn>
+  <div class="container-app">
+    <nav class="breadcrumb mb-6">
+      <a routerLink="/">Home</a>
+      <span>/</span>
+      <span class="text-wp-text dark:text-slate-200">Latest</span>
+    </nav>
+
+    @if (heroBlog(); as hero) {
+      <app-blog-card [blog]="hero" variant="featured" />
+    }
+  </div>
+</section>
+
+<div class="container-app py-12 lg:py-14">
+  <div class="flex flex-col gap-12 lg:flex-row">
+    <!-- Main column -->
+    <div class="min-w-0 flex-1 lg:max-w-[calc(100%-320px)]">
+      @if (featured().length > 1) {
+        <section class="mb-12">
+          <h2 class="section-title border-b border-wp-border pb-3 dark:border-slate-700">Featured</h2>
+          <div class="mt-6 grid gap-6 sm:grid-cols-2">
+            @for (blog of featured().slice(1, 5); track blog._id) {
+              <app-blog-card [blog]="blog" />
+            }
+          </div>
+        </section>
+      }
+
+      <section>
+        <h2 class="section-title border-b border-wp-border pb-3 dark:border-slate-700">Latest posts</h2>
+        @if (loading()) {
+          <div class="mt-8"><app-skeleton [count]="4" [columns]="1" /></div>
+        } @else if (latest().length) {
+          <div class="mt-2">
+            @for (blog of latest(); track blog._id) {
+              <app-blog-card [blog]="blog" variant="list" />
+            }
+          </div>
+          <div class="mt-8 text-center">
+            <a routerLink="/blogs" class="btn btn-secondary">View all posts</a>
+          </div>
+        }
+      </section>
+
+      @if (trending().length) {
+        <section class="mt-14">
+          <h2 class="section-title border-b border-wp-border pb-3 dark:border-slate-700">Popular posts</h2>
+          <div class="mt-4">
+            @for (blog of trending(); track blog._id) {
+              <app-blog-card [blog]="blog" variant="horizontal" />
+            }
+          </div>
+        </section>
+      }
+    </div>
+
+    <!-- Sidebar -->
+    <div class="w-full shrink-0 lg:w-[280px]">
+      <app-blog-sidebar />
+    </div>
+  </div>
+</div>

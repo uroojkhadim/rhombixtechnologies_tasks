@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+@import 'quill/dist/quill.snow.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-display: 'Source Serif 4', Georgia, serif;
+
+  /* WordPress-inspired palette */
+  --color-brand-50: #f0f6fc;
+  --color-brand-100: #dce9f7;
+  --color-brand-200: #b8d4f0;
+  --color-brand-300: #7eb3e8;
+  --color-brand-400: #4a94d9;
+  --color-brand-500: #3582c4;
+  --color-brand-600: #2271b1;
+  --color-brand-700: #135e96;
+  --color-brand-800: #0a4b78;
+  --color-brand-900: #063d62;
+  --color-brand-950: #042f4d;
+
+  --color-wp-bg: #f6f7f7;
+  --color-wp-border: #dcdcde;
+  --color-wp-text: #1d2327;
+  --color-wp-muted: #50575e;
+
+  --color-surface-800: #2c3338;
+  --color-surface-900: #1d2327;
+  --color-surface-950: #101517;
+
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 4px 12px rgb(0 0 0 / 0.08);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    @apply antialiased;
+  }
+
+  body {
+    @apply font-sans text-[15px] leading-relaxed text-wp-text bg-wp-bg dark:text-slate-200 dark:bg-surface-950;
+  }
+
+  ::selection {
+    @apply bg-brand-600/20 text-brand-900 dark:text-brand-100;
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-[1140px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply mx-auto w-full max-w-[720px] px-4 sm:px-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-medium transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-brand-600 text-white hover:bg-brand-700 dark:bg-brand-500 dark:hover:bg-brand-600;
+  }
+
+  .btn-secondary {
+    @apply border border-wp-border bg-white text-wp-text hover:border-brand-600 hover:text-brand-600 dark:border-slate-600 dark:bg-surface-900 dark:text-slate-200 dark:hover:border-brand-400 dark:hover:text-brand-400;
+  }
+
+  .btn-ghost {
+    @apply text-wp-muted hover:bg-white hover:text-brand-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-brand-400;
+  }
+
+  .input-field {
+    @apply w-full rounded-sm border border-wp-border bg-white px-3 py-2.5 text-sm text-wp-text shadow-sm transition placeholder:text-slate-400 focus:border-brand-600 focus:outline-none focus:ring-1 focus:ring-brand-600 dark:border-slate-600 dark:bg-surface-900 dark:text-slate-100;
+  }
+
+  .card {
+    @apply rounded-sm border border-wp-border bg-white shadow-soft dark:border-slate-700 dark:bg-surface-900;
+  }
+
+  .wp-widget {
+    @apply rounded-sm border border-wp-border bg-white p-5 shadow-soft dark:border-slate-700 dark:bg-surface-900;
+  }
+
+  .wp-widget-title {
+    @apply mb-4 border-b border-wp-border pb-2 font-sans text-xs font-semibold uppercase tracking-widest text-wp-muted dark:border-slate-700 dark:text-slate-400;
+  }
+
+  .badge {
+    @apply inline-flex items-center text-xs font-medium;
+  }
+
+  .badge-brand {
+    @apply text-brand-600 hover:underline dark:text-brand-400;
+  }
+
+  .section-title {
+    @apply font-serif text-2xl font-semibold text-wp-text sm:text-[1.75rem] dark:text-white;
+  }
+
+  .entry-title {
+    @apply font-serif text-xl font-semibold leading-snug text-wp-text transition-colors hover:text-brand-600 dark:text-white dark:hover:text-brand-400 sm:text-2xl;
+  }
+
+  .entry-meta {
+    @apply text-sm text-wp-muted dark:text-slate-400;
+  }
+
+  .gradient-text {
+    @apply text-brand-600 dark:text-brand-400;
+  }
+
+  .site-header {
+    @apply border-b border-wp-border bg-white dark:border-slate-700 dark:bg-surface-900;
+  }
+
+  .site-footer {
+    @apply border-t border-wp-border bg-surface-900 text-slate-300;
+  }
+
+  .breadcrumb {
+    @apply flex flex-wrap items-center gap-2 text-sm text-wp-muted dark:text-slate-400;
+  }
+
+  .breadcrumb a {
+    @apply hover:text-brand-600 dark:hover:text-brand-400;
+  }
+}
+
+.ql-toolbar.ql-snow {
+  @apply border-wp-border bg-wp-bg dark:border-slate-700 dark:bg-surface-900;
+}
+.ql-container.ql-snow {
+  @apply min-h-[280px] border-wp-border bg-white dark:border-slate-700 dark:bg-surface-900;
+}
+.ql-editor {
+  @apply text-wp-text dark:text-slate-200;
+}
+
+.prose-blog {
+  @apply text-[17px] leading-[1.8] text-wp-text dark:text-slate-300;
+
+  h2 {
+    @apply mt-10 mb-4 font-serif text-[1.65rem] font-semibold text-wp-text scroll-mt-24 dark:text-white;
+  }
+  h3 {
+    @apply mt-8 mb-3 font-serif text-xl font-semibold text-wp-text scroll-mt-24 dark:text-white;
+  }
+  p {
+    @apply mb-6;
+  }
+  ul,
+  ol {
+    @apply mb-6 ml-6 list-disc space-y-2;
+  }
+  a {
+    @apply text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700 dark:text-brand-400;
+  }
+  img {
+    @apply my-8 w-full rounded-sm;
+  }
+  blockquote {
+    @apply my-8 border-l-4 border-brand-600 bg-brand-50/50 py-2 pl-5 italic text-wp-muted dark:border-brand-500 dark:bg-brand-950/30 dark:text-slate-400;
+  }
+}

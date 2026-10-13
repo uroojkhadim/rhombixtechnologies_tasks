@@ -1,0 +1,34 @@
+<div class="grid gap-6 lg:grid-cols-2">
+  <div class="card p-6">
+    <h2 class="font-display text-lg font-bold text-slate-900 dark:text-white">Categories</h2>
+    <p class="mt-1 text-sm text-slate-500">Organize articles by topic</p>
+    <form [formGroup]="catForm" (ngSubmit)="addCategory()" class="mt-4 flex gap-2">
+      <input type="text" formControlName="name" placeholder="Category name" class="input-field flex-1" />
+      <button type="submit" class="btn btn-primary shrink-0">Add</button>
+    </form>
+    <ul class="mt-6 space-y-2">
+      @for (c of categories(); track c._id) {
+        <li class="flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3 dark:border-slate-700">
+          <span class="font-medium text-slate-800 dark:text-white">{{ c.name }}</span>
+          <button type="button" (click)="deleteCategory(c._id)" class="text-xs font-medium text-red-600">Remove</button>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="card p-6">
+    <h2 class="font-display text-lg font-bold text-slate-900 dark:text-white">Tags</h2>
+    <p class="mt-1 text-sm text-slate-500">Label content for discovery</p>
+    <form [formGroup]="tagForm" (ngSubmit)="addTag()" class="mt-4 flex gap-2">
+      <input type="text" formControlName="name" placeholder="Tag name" class="input-field flex-1" />
+      <button type="submit" class="btn btn-primary shrink-0">Add</button>
+    </form>
+    <div class="mt-6 flex flex-wrap gap-2">
+      @for (t of tags(); track t._id) {
+        <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-1.5 text-sm dark:border-slate-700 dark:bg-slate-800">
+          {{ t.name }}
+          <button type="button" (click)="deleteTag(t._id)" class="flex h-5 w-5 items-center justify-center rounded-full text-red-500 hover:bg-red-50">×</button>
+        </span>
+      }
+    </div>
+  </div>
+</div>

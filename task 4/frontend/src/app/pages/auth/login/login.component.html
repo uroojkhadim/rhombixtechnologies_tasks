@@ -1,0 +1,27 @@
+<app-auth-shell>
+  <h1 class="font-serif text-2xl font-bold text-wp-text dark:text-white">Log in</h1>
+  <p class="entry-meta mt-2">Welcome back. Please enter your details.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="mt-8 space-y-4">
+    <div>
+      <label class="mb-1 block text-sm font-medium">Username or email</label>
+      <input type="email" formControlName="email" class="input-field" />
+      @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <p class="mt-1 text-xs text-red-600">Valid email required</p>
+      }
+    </div>
+    <div>
+      <label class="mb-1 block text-sm font-medium">Password</label>
+      <div class="relative">
+        <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" class="input-field !pr-10" />
+        <button type="button" (click)="showPassword.set(!showPassword())" class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-brand-600">Show</button>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-full" [disabled]="loading()">Log in</button>
+  </form>
+
+  <p class="mt-6 text-center text-sm text-wp-muted">
+    Need an account? <a routerLink="/register" class="font-medium text-brand-600 hover:underline">Register</a>
+  </p>
+  <p class="mt-4 text-center text-xs text-wp-muted">Demo: admin@blog.com / admin123</p>
+</app-auth-shell>
